@@ -24,6 +24,7 @@ class Battery(VehicleDevice):
         """
         super().__init__(data, controller)
         self.__battery_level: int = 0
+        self.__usable_battery_level: int = 0
         self.__charging_state: bool = None
         self.__charge_port_door_open: bool = None
         self.type: Text = "battery sensor"
@@ -40,6 +41,7 @@ class Battery(VehicleDevice):
         data = self._controller.get_charging_params(self._id)
         if data:
             self.__battery_level = data["battery_level"]
+            self.__usable_battery_level = data["usable_battery_level"]
             self.__charging_state = data["charging_state"] == "Charging"
 
     @staticmethod
@@ -50,6 +52,10 @@ class Battery(VehicleDevice):
     def get_value(self) -> int:
         """Return the battery level."""
         return self.__battery_level
+
+    def get_usable_value(self) -> int:
+        """Return the usable battery level."""
+        return self.__usable_battery_level
 
     def battery_level(self) -> int:
         """Return the battery level."""
