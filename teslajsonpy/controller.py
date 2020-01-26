@@ -290,8 +290,8 @@ class Controller:
                     retries += 1
                 if retries >= 5:
                     raise RetryLimitError("Reached retry limit; aborting")
-            inst.car_online[inst._id_to_vin(car_id)] = True
-            return result
+                    inst.car_online[inst._id_to_vin(car_id)] = True
+                    return result
 
         return wrapped
 
@@ -469,7 +469,7 @@ class Controller:
         async with self.__controller_lock:
             #  Update the online cars using get_vehicles()
             last_update = self._last_attempted_update_time
-            if force or cur_time - last_update > self.update_interval:
+            if force or cur_time - last_update > 60:
                 cars = await self.get_vehicles()
                 self.car_online = {}
                 for car in cars:
