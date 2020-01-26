@@ -470,6 +470,7 @@ class Controller:
             #  Update the online cars using get_vehicles()
             last_update = self._last_attempted_update_time
             if force or cur_time - last_update > 60:
+                _LOGGER.debug("Checking online status for all cars")
                 cars = await self.get_vehicles()
                 self.car_online = {}
                 for car in cars:
@@ -503,6 +504,7 @@ class Controller:
                         )
                     )
                 ):  # Only update cars with update flag on
+                    _LOGGER.debug("Getting detailed data for car '%s'", car_id)
                     try:
                         data = await self.get(
                             car_id, "data", wake_if_asleep=wake_if_asleep
