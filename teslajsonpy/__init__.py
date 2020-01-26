@@ -6,7 +6,7 @@ For more details about this api, please refer to the documentation at
 https://github.com/zabuldon/teslajsonpy
 """
 from teslajsonpy.battery_sensor import Battery, Range
-from teslajsonpy.binary_sensor import ChargerConnectionSensor, ParkingSensor
+from teslajsonpy.binary_sensor import ChargerConnectionSensor, ParkingSensor, Online
 from teslajsonpy.charger import ChargerSwitch, ChargingSensor, RangeSwitch
 from teslajsonpy.climate import Climate, TempSensor
 from teslajsonpy.controller import Controller
@@ -22,6 +22,7 @@ __all__ = [
     "ChargerConnectionSensor",
     "ChargingSensor",
     "ParkingSensor",
+    "Online",
     "ChargerSwitch",
     "RangeSwitch",
     "Climate",
