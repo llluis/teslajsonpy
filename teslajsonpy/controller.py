@@ -608,6 +608,7 @@ class Controller:
         """
         vin = self._id_to_vin(car_id)
         if vin:
+            _LOGGER.debug("Setting update switch of car '%s' to '%s'", car_id, value)
             self.__update[vin] = value
 
     def get_last_update_time(self, car_id: Text = None):
