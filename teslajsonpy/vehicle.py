@@ -6,7 +6,6 @@ For more details about this api, please refer to the documentation at
 https://github.com/zabuldon/teslajsonpy
 """
 import logging
-from typing import Dict, Optional, Text
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -40,6 +39,7 @@ class VehicleDevice:
         self._state = data["state"]
         self._car_type = f"Model {str(self._vin[3]).upper()}"
         self._car_version = ""
+        self.attrs = {}
         self._controller = controller
         self.should_poll = True
         self.type = "device"
@@ -104,57 +104,3 @@ class VehicleDevice:
     def is_armed():
         """Return whether the vehicle is armed."""
         return False
-
-
-class StatusSensor(VehicleDevice):
-    """Home-Assistant status sensor class for a Tesla VehicleDevice."""
-
-    def __init__(self, data: Dict, controller) -> None:
-        """Initialize the sensor.
-
-        Args:
-            data (Dict): The car parameters for a Tesla vehicle.
-            https://tesla-api.timdorr.com/api-basics/vehicles#get-api-1-vehicles-id
-            controller (Controller): The controller that controls updates to the Tesla API.
-
-        """
-        super().__init__(data, controller)
-        self.type: Text = "status sensor"
-        self.__status = "Unknown"
-        self.hass_type: Text = "sensor"
-        self.name: Text = self._name()
-        self.uniq_name: Text = self._uniq_name()
-        self.measurement = None
-        self._device_class: Optional[Text] = None
-
-    async def async_update(self) -> None:
-        """Update the sensor state."""
-        await super().async_update()
-
-        charging_data = self._controller.get_charging_params(self._id)
-        driving_data = self._controller.get_drive_params(self._id)
-
-        if not self._controller.car_online[self._vin]:
-            self.__status = "Sleeping"
-        elif charging_data and charging_data["charging_state"] == "Charging":
-            self.__status = "Charging"
-        elif driving_data and driving_data["shift_state"] in ["D", "R", "N"]:
-            self.__status = "Driving"
-        elif not driving_data["shift_state"] or driving_data["shift_state"] == "P":
-            self.__status = "Parked"
-        else:
-            self.__status = "Unknown"
-
-    @staticmethod
-    def has_battery() -> bool:
-        """Return whether the device has a battery."""
-        return False
-
-    def get_value(self) -> int:
-        """Return the calculated status."""
-        return self.__status
-
-    @property
-    def device_class(self) -> Text:
-        """Return the HA device class."""
-        return self._device_class

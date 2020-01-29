@@ -13,14 +13,12 @@ from teslajsonpy.controller import Controller
 from teslajsonpy.exceptions import TeslaException
 from teslajsonpy.gps import GPS, Odometer
 from teslajsonpy.lock import Lock
-from teslajsonpy.vehicle import StatusSensor
 
 from .__version__ import __version__
 
 __all__ = [
     "Battery",
     "Range",
-    "StatusSensor",
     "ChargerConnectionSensor",
     "ChargingSensor",
     "ParkingSensor",

@@ -24,7 +24,6 @@ from teslajsonpy.connection import Connection
 from teslajsonpy.exceptions import RetryLimitError, TeslaException
 from teslajsonpy.gps import GPS, Odometer
 from teslajsonpy.lock import ChargerLock, Lock
-from teslajsonpy.vehicle import StatusSensor
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -117,7 +116,6 @@ class Controller:
             self.__components.append(GPS(car, self))
             self.__components.append(Odometer(car, self))
             self.__components.append(OnlineSensor(car, self))
-            self.__components.append(StatusSensor(car, self))
             self.__components.append(SentrySwitch(car, self))
 
         tasks = [self.update(car["id"], wake_if_asleep=True) for car in cars]
